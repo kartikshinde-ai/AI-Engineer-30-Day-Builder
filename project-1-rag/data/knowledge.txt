@@ -1,0 +1,15 @@
+AI Engineering Knowledge Base
+
+AI Engineering is the process of building practical systems using artificial intelligence.
+
+Retrieval-Augmented Generation (RAG) is a technique that retrieves relevant information from a knowledge base and provides that information to a language model before generating an answer.
+
+A RAG system typically contains document loading, chunking, embeddings, vector storage, retrieval, prompt construction, and response generation.
+
+Embeddings convert text into numerical representations so that semantically similar pieces of information can be searched efficiently.
+
+Vector search finds the document chunks that are most relevant to a user's question.
+
+The retrieved information should be inspected before it is passed to the language model.
+
+A reliable RAG system should answer using information grounded in the provided knowledge base and should avoid guessing when the required information is unavailable.
