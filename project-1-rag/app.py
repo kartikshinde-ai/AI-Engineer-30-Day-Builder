@@ -68,7 +68,7 @@ print("\n=== VECTOR STORAGE READY ===")
 # question = "What is the capital of France?"
 # question = "Who is the CEO of OpenAI?"
 # question = "What year was RAG invented?"
-question = "What is the population of India?"
+# question = "What is the population of India?"
 
 
 
