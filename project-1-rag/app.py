@@ -54,7 +54,22 @@ print("\n=== VECTOR STORAGE READY ===")
 
 
 # 5. Ask a known question
-question = "What is Retrieval-Augmented Generation?"
+# question = "What is AI Engineering?"
+# question = "What is Retrieval-Augmented Generation?"
+# question = "What does a RAG system typically contain?"
+# question = "What do embeddings do?"
+# question = "What does vector search find?"
+# question = "What is the purpose of embeddings?"
+# question = "What information does RAG retrieve?"
+# question = "What should happen before the language model generates an answer?"
+# question = "What does a reliable RAG system use to answer questions?"
+# question = "What should the retrieved information be before it is passed to the language model?"
+# question = "Who invented RAG?"
+# question = "What is the capital of France?"
+# question = "Who is the CEO of OpenAI?"
+# question = "What year was RAG invented?"
+question = "What is the population of India?"
+
 
 
 # 6. Create question embedding
@@ -71,7 +86,8 @@ def cosine_similarity(a, b):
     return dot_product / (magnitude_a * magnitude_b)
 
 
-# 8. Retrieve most relevant chunk
+# 8. Retrieve top 3 most relevant chunks
+
 results = []
 
 for item in vector_store:
@@ -85,24 +101,37 @@ for item in vector_store:
 
 results.sort(key=lambda x: x["score"], reverse=True)
 
-retrieved_text = results[0]["text"]
+top_results = results[:3]
+
+retrieved_text = "\n\n---\n\n".join(
+    item["text"] for item in top_results
+)
+
+source_file = file_path.name
 
 
 # 9. IMPORTANT: Inspect retrieved text
 print("\n=== RETRIEVED TEXT ===")
 print(retrieved_text)
 
-print("\nSimilarity Score:")
-print(results[0]["score"])
+print("\n=== SOURCE ===")
+print(source_file)
 
+print("\n=== TOP SIMILARITY SCORES ===")
+
+for i, item in enumerate(top_results, start=1):
+    print(f"{i}. {item['score']}")
 
 # 10. Send retrieved context to LLM
+
 llm = OllamaLLM(
     model="llama3.2:3b"
 )
 
 prompt = f"""
-Answer the question using ONLY the retrieved context below.
+You are a document question-answering assistant.
+
+Use the retrieved context to answer the question.
 
 Retrieved Context:
 {retrieved_text}
@@ -110,12 +139,19 @@ Retrieved Context:
 Question:
 {question}
 
+Instructions:
+- If the answer is present in the retrieved context, answer it directly.
+- Use only information from the retrieved context.
+- Do not use outside knowledge.
+- If the answer is not present in the retrieved context, say:
+  "I could not find this information in the provided documents."
+
 Answer:
 """
 
+print("\n=== GENERATING ANSWER ===")
+
 response = llm.invoke(prompt)
 
-
-# 11. Final response
 print("\n=== FINAL ANSWER ===")
 print(response)
